@@ -19,4 +19,6 @@
 
     <bean name="loggingAdvice" class="org.spring.aspect.LoggingAspect"/>
 
+    <bean name="loggingAdvicePointCutsWildcards" class="org.spring.aspect.LogginAspectPointCutsWildCards"/>
+
 </beans>
