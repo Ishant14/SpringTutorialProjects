@@ -223,17 +223,17 @@ This approach might look simpler and cleaner but is not recommended to use becau
 - This method uses reflection to inject the dependencies, which is costlier than constructor-based or setter-based injection
 - It’s really easy to keep adding multiple dependencies using this approach. If you were using constructor injection having   arguments would have made us think that the class does more than one thing which can violate the Single Responsibility    Principle.
 
-**Which is the best way of injecting beans and why?**
+# Which is the best way of injecting beans and why
 
 The recommended approach is to use constructor arguments for mandatory dependencies and setters for optional ones. Constructor injection allows injecting values to immutable fields and makes testing easier.
 
-**What is a Spring Bean?**
+# What is a Spring Bean?
 
 Any normal java class that is initialized by Spring IoC container is called Spring Bean. We use Spring ApplicationContext to get the Spring Bean instance.
 
 Spring IoC container manages the life cycle of Spring Bean, bean scopes and injecting any required dependencies in the bean.
 
-**What are different ways to configure a class as Spring Bean?**
+# What are different ways to configure a class as Spring Bean?
 
 There are three different ways to configure Spring Bean.
 
@@ -269,6 +269,23 @@ MyService service = ctx.getBean(MyService.class);
 ```java
 context:component-scan base-package="com.journaldev.spring" />
 ```
+
+# What are different scopes of Spring Bean?
+
+There are five scopes defined for Spring Beans.
+
+- **singleton:** Only one instance of the bean will be created for each container. This is the default scope for the spring beans. While using this scope, make sure spring bean doesn’t have shared instance variables otherwise it might lead to data inconsistency issues because it’s not thread-safe.
+- **prototype:** A new instance will be created every time the bean is requested.
+request: This is same as prototype scope, however it’s meant to be used for web applications. A new instance of the bean will be created for each HTTP request.
+- **session:** A new bean will be created for each HTTP session by the container.
+- **global-session:** This is used to create global session beans for Portlet applications.
+
+Spring Framework is extendable and we can create our own scopes too, however most of the times we are good with the scopes provided by the framework.
+
+> To set spring bean scopes we can use “scope” attribute in bean element or @Scope annotation for annotation based configurations.
+
+
+
 
 
 
