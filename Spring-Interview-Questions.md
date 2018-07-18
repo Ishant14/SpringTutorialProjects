@@ -1,11 +1,11 @@
-# What is Spring Framework?
+## What is Spring Framework?
 
 Spring is the most broadly used framework for the development of Java Enterprise Edition applications. 
 The core features of Spring can be used in developing any Java application.We can use its extensions for building various 
 web applications on top of the Java EE platform, or we may just use its dependency injection provisions in simple standalone 
 applications.
 
-# What are the benefits of using Spring?
+## What are the benefits of using Spring?
 
 Spring targets to make Java EE development easier. Here are the advantages of using it:
 
@@ -23,7 +23,7 @@ Spring targets to make Java EE development easier. Here are the advantages of us
 
 **Exception Handling:** Spring provides a convenient API for translating technology-specific exceptions into unchecked exceptions
 
-# What Spring sub-projects do you know? Describe them briefly.
+## What Spring sub-projects do you know? Describe them briefly.
 
 - Core – a key module that provides fundamental parts of the framework, like IoC or DI
 - JDBC – this module enables a JDBC-abstraction layer that removes the need to do JDBC coding for specific vendor databases
@@ -32,7 +32,7 @@ Spring targets to make Java EE development easier. Here are the advantages of us
 - MVC framework – a web module implementing the Model View Controller design pattern
 - AOP module – aspect-oriented programming implementation allowing the definition of clean method-interceptors and pointcuts
 
-# What is Inversion of Control?
+## What is Inversion of Control?
 
 Inversion of Control is a principle in software engineering by which the control of objects or portions of a program is transferred to a container or framework. It’s most often used in the context of object-oriented programming.
 
@@ -46,7 +46,7 @@ greater modularity of a program
 greater ease in testing a program by isolating a component or mocking its dependencies and allowing components to communicate through contracts
 Inversion of Control can be achieved through various mechanisms such as: Strategy design pattern, Service Locator pattern, Factory pattern, and Dependency Injection (DI).
 
-# What is Dependency Injection?
+## What is Dependency Injection?
 
 Dependency injection is a pattern through which to implement IoC, where the control being inverted is the setting of object’s dependencies.
 
@@ -78,7 +78,7 @@ public class Store {
 
 ```
 
-# What is Spring IOC container ?
+## What is Spring IOC container ?
 
 An IoC container is a common characteristic of frameworks that implement IoC.
 
@@ -103,7 +103,7 @@ Some of the useful ApplicationContext implementations that we use are;
 
 
 
-# How dependency Injection is done in Spring ?
+## How dependency Injection is done in Spring ?
 
 Dependency Injection in Spring can be done through :
 1. constructors 
@@ -223,17 +223,17 @@ This approach might look simpler and cleaner but is not recommended to use becau
 - This method uses reflection to inject the dependencies, which is costlier than constructor-based or setter-based injection
 - It’s really easy to keep adding multiple dependencies using this approach. If you were using constructor injection having   arguments would have made us think that the class does more than one thing which can violate the Single Responsibility    Principle.
 
-# Which is the best way of injecting beans and why
+## Which is the best way of injecting beans and why
 
 The recommended approach is to use constructor arguments for mandatory dependencies and setters for optional ones. Constructor injection allows injecting values to immutable fields and makes testing easier.
 
-# What is a Spring Bean?
+## What is a Spring Bean?
 
 Any normal java class that is initialized by Spring IoC container is called Spring Bean. We use Spring ApplicationContext to get the Spring Bean instance.
 
 Spring IoC container manages the life cycle of Spring Bean, bean scopes and injecting any required dependencies in the bean.
 
-# What are different ways to configure a class as Spring Bean?
+## What are different ways to configure a class as Spring Bean?
 
 There are three different ways to configure Spring Bean.
 
@@ -270,7 +270,7 @@ MyService service = ctx.getBean(MyService.class);
 context:component-scan base-package="com.journaldev.spring" />
 ```
 
-# What are different scopes of Spring Bean?
+## What are different scopes of Spring Bean?
 
 There are five scopes defined for Spring Beans.
 
@@ -284,10 +284,17 @@ Spring Framework is extendable and we can create our own scopes too, however mos
 
 > To set spring bean scopes we can use “scope” attribute in bean element or @Scope annotation for annotation based configurations.
 
+## What is the default bean scope in Spring framework?
+ By default, a Spring Bean is initialized as a singleton.
 
+## Are singleton beans thread-safe?
 
+No, singleton beans are not thread-safe, as thread safety is about execution, whereas the singleton is a design pattern focusing on creation. Thread safety depends only on the bean implementation itself.
 
-
+## If i create the 2 beans for a class Employee as
+## <id=emp1 class="Employee" scope="singleton">                                                               
+## <id=emp2 class="Employee" scope="singleton">
+## then how many bean of Employee class will be created ?
 
 
 
