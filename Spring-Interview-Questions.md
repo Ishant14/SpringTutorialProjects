@@ -374,7 +374,7 @@ Spring framework provides the following ways which can be used to control the li
 2. Bean Name, bean factory and Application Context  Aware interfaces for specific behavior
 3. custom init() and destroy() methods in bean configuration file
 
-
+![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
 
 
 
