@@ -1,4 +1,4 @@
-# Q1. What is Spring Framework?
+# What is Spring Framework?
 
 Spring is the most broadly used framework for the development of Java Enterprise Edition applications. 
 The core features of Spring can be used in developing any Java application.We can use its extensions for building various 
@@ -84,7 +84,7 @@ An IoC container is a common characteristic of frameworks that implement IoC.
 
 In the Spring framework, the IoC container is represented by the interface ApplicationContext. The Spring container is responsible for instantiating, configuring and assembling objects known as beans, as well as managing their lifecycle.
 
-The Spring framework provides several implementations of the ```java ApplicationContext``` interface — ```ClassPathXmlApplicationContext``` and ```FileSystemXmlApplicationContext``` for standalone applications, and ```WebApplicationContext``` for web applications.
+The Spring framework provides several implementations of the ```ApplicationContext``` interface — ```ClassPathXmlApplicationContext``` and ```FileSystemXmlApplicationContext``` for standalone applications, and ```WebApplicationContext``` for web applications.
 
 In order to assemble beans, the container uses configuration metadata, which can be in the form of XML configuration or annotations.
 
@@ -93,6 +93,126 @@ Here’s one way to manually instantiate a container:
 ```java
 ApplicationContext context  = new ClassPathXmlApplicationContext("applicationContext.xml");
 ```
+
+# How dependency Injection is done in Spring ?
+
+Dependency Injection in Spring can be done through :
+1. constructors 
+2. setters  
+3. fields.
+
+ **Constructor-Based Dependency Injection**
+ 
+ Java configuration file looks pretty much like a plain-old java object with some additional annotations:
+ 
+ ```java
+ @Configuration
+@ComponentScan("com.baeldung.spring")
+public class Config {
+ 
+    @Bean
+    public Engine engine() {
+        return new Engine("v8", 5);
+    }
+ 
+    @Bean
+    public Transmission transmission() {
+        return new Transmission("sliding");
+    }
+}
+ ```
+ 
+ Next, we define a Car class:
+ 
+ ```java
+ @Component
+public class Car {
+ 
+    @Autowired
+    public Car(Engine engine, Transmission transmission) {
+        this.engine = engine;
+        this.transmission = transmission;
+    }
+}
+
+ ```
+Spring will encounter our ```Car``` class while doing a package scan and will initialize its instance by calling the ```@Autowired``` annotated constructor.
+
+Instances of Engine and Transmission will be obtained by calling ```@Bean``` annotated methods of the Config class. Finally, we need to bootstrap an ApplicationContext using our POJO configuration:
+
+```java
+ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
+Car car = context.getBean(Car.class);
+```
+
+XML Based Configuration :- 
+
+Another way to configure Spring runtime with constructor-based dependency injection is to use an xml configuration file:
+
+```
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+ 
+    <bean id="toyota" class="com.baeldung.spring.domain.Car">
+        <constructor-arg index="0" ref="engine"/>
+        <constructor-arg index="1" ref="transmission"/>
+    </bean>
+ 
+    <bean id="engine" class="com.baeldung.spring.domain.Engine">
+        <constructor-arg index="0" value="v4"/>
+        <constructor-arg index="1" value="2"/>
+    </bean>
+ 
+    <bean id="transmission" class="com.baeldung.spring.domain.Transmission">
+        <constructor-arg value="sliding"/>
+    </bean>
+ 
+</beans>
+
+```
+
+**Setter-Based Dependency Injection**
+
+For setter-based DI, the container will call setter methods of our class, after invoking a no-argument constructor or no-argument static factory method to instantiate the bean. Let’s create this configuration using annotations:
+
+```java
+@Bean
+public Store store() {
+    Store store = new Store();
+    store.setItem(item1());
+    return store;
+}
+```
+We can also use XML for the same configuration of beans:
+
+```
+<bean id="store" class="org.baeldung.store.Store">
+    <property name="item" ref="item1" />
+</bean>
+```
+
+**Field-Based Dependency Injection**
+
+In case of Field-Based DI, we can inject the dependencies by marking them with an @Autowired annotation:
+
+```java
+public class Store {
+    @Autowired
+    private Item item; 
+}
+```
+
+While constructing the Store object, if there’s no constructor or setter method to inject the Item bean, the container will use reflection to inject Item into Store.
+
+
+**Why Field-Based Dependency Injection should be avoied ?**
+
+This approach might look simpler and cleaner but is not recommended to use because it has a few drawbacks such as:
+
+- This method uses reflection to inject the dependencies, which is costlier than constructor-based or setter-based injection
+- It’s really easy to keep adding multiple dependencies using this approach. If you were using constructor injection having   arguments would have made us think that the class does more than one thing which can violate the Single Responsibility    Principle.
 
 
 
