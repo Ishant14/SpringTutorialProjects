@@ -94,6 +94,15 @@ Here’s one way to manually instantiate a container:
 ApplicationContext context  = new ClassPathXmlApplicationContext("applicationContext.xml");
 ```
 
+Some of the useful ApplicationContext implementations that we use are;
+
+- **AnnotationConfigApplicationContext:** For standalone java applications using annotations based configuration.
+- **ClassPathXmlApplicationContext:** For standalone java applications using XML based configuration.
+- **FileSystemXmlApplicationContext:** Similar to ClassPathXmlApplicationContext except that the xml configuration file can be loaded from anywhere in the file system.
+- **AnnotationConfigWebApplicationContext** and **XmlWebApplicationContext** for web applications.
+
+
+
 # How dependency Injection is done in Spring ?
 
 Dependency Injection in Spring can be done through :
@@ -213,6 +222,57 @@ This approach might look simpler and cleaner but is not recommended to use becau
 
 - This method uses reflection to inject the dependencies, which is costlier than constructor-based or setter-based injection
 - It’s really easy to keep adding multiple dependencies using this approach. If you were using constructor injection having   arguments would have made us think that the class does more than one thing which can violate the Single Responsibility    Principle.
+
+**Which is the best way of injecting beans and why?**
+
+The recommended approach is to use constructor arguments for mandatory dependencies and setters for optional ones. Constructor injection allows injecting values to immutable fields and makes testing easier.
+
+**What is a Spring Bean?**
+
+Any normal java class that is initialized by Spring IoC container is called Spring Bean. We use Spring ApplicationContext to get the Spring Bean instance.
+
+Spring IoC container manages the life cycle of Spring Bean, bean scopes and injecting any required dependencies in the bean.
+
+**What are different ways to configure a class as Spring Bean?**
+
+There are three different ways to configure Spring Bean.
+
+1. **XML Configuration:** This is the most popular configuration and we can use bean element in context file to configure a Spring Bean. For example:
+
+```
+<bean name="myBean" class="com.journaldev.spring.beans.MyBean"></bean>
+```
+2. **Java Based Configuration:** If you are using only annotations, you can configure a Spring bean using @Bean annotation. This annotation is used with @Configuration classes to configure a spring bean. Sample configuration is:
+
+```java
+@Configuration
+@ComponentScan(value="com.journaldev.spring.main")
+public class MyConfiguration {
+
+	@Bean
+	public MyService getService(){
+		return new MyService();
+	}
+}
+```
+
+To get this bean from spring context, we need to use following code snippet:
+
+```java
+AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(
+		MyConfiguration.class);
+MyService service = ctx.getBean(MyService.class);
+```
+
+3. **Annotation Based Configuration:** We can also use @Component, @Service, @Repository and @Controller annotations with classes to configure them to be as spring bean. For these, we would need to provide base package location to scan for these classes. For example:
+
+```java
+context:component-scan base-package="com.journaldev.spring" />
+```
+
+
+
+
 
 
 
