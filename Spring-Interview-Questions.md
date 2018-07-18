@@ -302,10 +302,11 @@ However we can change spring bean scope to request, prototype or session to achi
 
 ```java
  If i create the 2 beans for a class Employee as
- <id=emp1 class="Employee" scope="singleton">                                                               
+ <id=emp1 class="Employee" scope="singleton">
  <id=emp2 class="Employee" scope="singleton">
  then how many bean of Employee class will be created ?
- ```
+  ```
+
 This is a very classy question to test the knowledge of a person whether he actually know the what does singleton scope in spring means or not .
 
 Here 2 different beans will be created with different id .
