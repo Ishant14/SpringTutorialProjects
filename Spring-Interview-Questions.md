@@ -364,6 +364,20 @@ In other terms spring allow to create a bean even with private constructor , so 
 > Spring is completely based on reflection. It follows all the design principle and gives the power to the developer.
 
 
+## What is Spring Bean life cycle?
+
+Life of traditional java objects starts on calling new operator which instantiates the object and finalize() method is getting called when the object is eligible for garbage collection. Life cycle of Spring beans are different as compared to traditional java objects.
+
+Spring framework provides the following ways which can be used to control the lifecycle of  bean:
+
+1. InitializingBean and DisposableBean callback interfaces
+2. Bean Name, bean factory and Application Context  Aware interfaces for specific behavior
+3. custom init() and destroy() methods in bean configuration file
+
+
+
+
+
 
 
 
