@@ -101,6 +101,11 @@ Some of the useful ApplicationContext implementations that we use are;
 - **FileSystemXmlApplicationContext:** Similar to ClassPathXmlApplicationContext except that the xml configuration file can be loaded from anywhere in the file system.
 - **AnnotationConfigWebApplicationContext** and **XmlWebApplicationContext** for web applications.
 
+## What is the  difference in BeanFactory and Application Context ?
+
+**BeanFactory**
+
+
 
 
 ## How dependency Injection is done in Spring ?
@@ -289,13 +294,73 @@ Spring Framework is extendable and we can create our own scopes too, however mos
 
 ## Are singleton beans thread-safe?
 
-No, singleton beans are not thread-safe, as thread safety is about execution, whereas the singleton is a design pattern focusing on creation. Thread safety depends only on the bean implementation itself.
+The default scope of Spring bean is singleton, so there will be only one instance per context. That means that all the having a class level variable that any thread can update will lead to inconsistent data. Hence in default mode spring beans are not thread-safe.
 
-## If i create the 2 beans for a class Employee as
-## <id=emp1 class="Employee" scope="singleton">                                                               
-## <id=emp2 class="Employee" scope="singleton">
-## then how many bean of Employee class will be created ?
+However we can change spring bean scope to request, prototype or session to achieve thread-safety at the cost of performance. It’s a design decision and based on the project requirements.
 
+## How many beans will be created in following scenario  
+
+```java
+ If i create the 2 beans for a class Employee as
+ <id=emp1 class="Employee" scope="singleton">                                                               
+ <id=emp2 class="Employee" scope="singleton">
+ then how many bean of Employee class will be created ?
+ ```
+This is a very classy question to test the knowledge of a person whether he actually know the what does singleton scope in spring means or not .
+
+Here 2 different beans will be created with different id .
+
+Now generally the question which comes to mind to beginner is that we have given scope singleton then why 2 beans will be created .
+
+Actually Spring singleton scope is totally different from Java Singleton . Java singleton means that only one object of that class will be created per jvm or classloader. Whereas spring singleton means that once an instance is created with specific id then always same instance will be returned when we will try to do context.getBean() with same id.
+
+**We can create N beans with with N different id in spring with all of them as singleton scope.**
+
+## Singleton design pattern vs Singleton beans in Spring container
+
+The Java singleton is scoped by the Java class loader, the Spring singleton is scoped by the container context.
+
+Which basically means that, in Java, you can be sure a singleton is a truly a singleton only within the context of the class loader which loaded it. Other class loaders should be capable of creating another instance of it (provided the class loaders are not in the same class loader hierarchy), despite of all your efforts in code to try to prevent it.
+
+In Spring, if you could load your singleton class in two different contexts and then again we can break the singleton concept.
+
+So, in summary, Java considers something a singleton if it cannot create more than one instance of that class within a given class loader, whereas Spring would consider something a singleton if it cannot create more than one instance of a class within a given container/context.
+
+I find "per container per bean" difficult to apprehend. I would say "one bean per bean id".Lets have an example to understand it. We have a bean class Sample. I have defined two beans from this class in bean definition, like:
+
+```java
+<bean id="id1" class="com.example.Sample" scope="singleton">
+        <property name="name" value="James Bond 001"/>    
+</bean>    
+<bean id="id7" class="com.example.Sample" scope="singleton">
+        <property name="name" value="James Bond 007"/>    
+</bean>
+```
+
+So when ever I try to get the bean with id "id1",the spring container will create one bean, cache it and return same bean where ever refered with id1. If I try to get it with id7, another bean will be created from Sample class, same will be cached and returned each time you referred that with id7.
+
+This is unlikely with Singleton pattern. In Singlton pattern one object per class loader is created always. But in spring many objects are being created for the same class. However in Spring making the scope as Singleton returning same object for the same id.
+
+ 
+ ## Is it possible to create a bean if we make class constructor private ?
+
+Yes, Spring can invoke private constructors. If it finds a constructor with the right arguments, regardless of visibility, it will use reflection to set its constructor to be accessible.
+
+## Is it possible to inject the dependency if the setter is private ?
+
+No it is not possible to inject the dependency if we make the setter method private.
+
+
+
+## Why it is not possible to inject the dependency in private setter method where as it is possible to inject the dependency with private constructor ?
+
+Spring do not need to know about your private data member, that's why private setters are not supported. Spring does want to break the actual meaning private access modifier , doing so will create a lot of design problem. Hence Spring does not allow that.
+
+Now coming on to the private constructor , as you said it follows the singleton design patterns. To support this spring allows you to create singleton beans.
+
+In other terms spring allow to create a bean even with private constructor , so that you could create your actual Java Singleton type Spring Singleton bean.
+
+> Spring is completely based on reflection. It follows all the design principle and gives the power to the developer.
 
 
 
