@@ -377,7 +377,12 @@ Spring framework provides the following ways which can be used to control the li
 ![alt text](https://github.com/Ishant14/SpringTutorialProjects/blob/master/images/spring-bean-lifecycle.png)
 
 
+http://www.wideskills.com/spring/spring-bean-lifecycle
 
+## What is Bean wiring and @Autowired annotation?
 
+The process of injection spring bean dependencies while initializing it called Spring Bean Wiring.
 
+Usually it’s best practice to do the explicit wiring of all the bean dependencies, but spring framework also supports autowiring. We can use **@Autowired** annotation with fields or methods for autowiring **byType**. For this annotation to work, we also need to enable annotation based configuration in spring bean configuration file. This can be done by context:annotation-config element.
 
+## 
