@@ -105,7 +105,37 @@ Some of the useful ApplicationContext implementations that we use are;
 
 **BeanFactory**
 
+Bean Factory provides the basic support for DI and defined in  org.springframework.beans.factory.BeanFactory interface. BeanFactory is based on factory design pattern which creates the beans with the only difference that it creates the bean of any type (as compared to traditional factory pattern which creates a beans of similar types).
 
+***BeanFactory Implementations***
+
+There are several implementations of BeanFactory is available but out of all the most popular is XmlBeanFactory which loads the beans from a XML file.
+
+Several Resource implementations can be provided to XmlBeanFactory so XMLBeanFactory can load the XML file from various sources. Most commonly used Resource implementations are -
+
+ByteArrayResource
+ClassPathResource
+FileSystemResource
+InputStreamResource
+UrlResource
+
+**Application Context**
+
+ApplicationContext is the advanced  Spring container and defined by org.springframework.context.ApplicationContext interface. Application supports the features supported by Bean Factory but also provides additional features like –
+
+Convenient MessageSource access (for i18n)
+ApplicationEvent publicationEvent handling
+Generic way to load resources
+Automatic BeanPostProcessor registration
+Automatic BeanFactoryPostProcessor registration
+
+***Spring ApplicationContext Implementations***
+
+There are several implementations of ApplicationContext is available but out of all the most commonly used are –
+
+ClassPathXmlApplicationContext-  Loads the file beans configuration from XML file available in class path.
+FileSystemXmlApplicationContext- Loads the file beans configuration from XML file available in file system.
+XmlWebApplicationContext- Applicable for web applications only and loads the beans configurations available in web application.
 
 
 ## How dependency Injection is done in Spring ?
